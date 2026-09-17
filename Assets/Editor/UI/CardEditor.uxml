@@ -1,0 +1,140 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/UI/CardEditor.uss?fileID=7433441132597879392&amp;guid=c114aa505885d1949ab68a8e275da8a2&amp;type=3#CardEditor"/>
+    <ui:VisualElement data-source="project://database/Assets/Scripts/Scriptable%20Objects/Blank%20[CardData].asset?fileID=11400000&amp;guid=52c91665515021a44b1abf04a88c3255&amp;type=2#Blank [CardData]" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="" style="flex-grow: 1; border-top-width: 0; border-right-width: 2px; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(43, 43, 43); border-right-color: rgb(43, 43, 43); border-top-color: rgb(43, 43, 43); border-bottom-color: rgb(43, 43, 43); width: 650px; padding-right: 35px;">
+            <ui:VisualElement name="" style="flex-grow: 0; padding-bottom: 10px; padding-top: 10px;">
+                <ui:Label text="Card Editor" name="" style="-unity-text-align: upper-center; font-size: 24px; -unity-font-style: bold;"/>
+                <ui:Label text="By Jolten " name="" style="-unity-text-align: upper-center; font-size: 12px; -unity-font-style: bold;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:VisualElement style="flex-grow: 0;">
+                    <ui:Label text="Basic" style="-unity-text-align: upper-left; -unity-font-style: bold; padding-left: 4px;"/>
+                    <ui:TextField label="Name" placeholder-text="Name of the card" hide-placeholder-on-focus="true">
+                        <Bindings>
+                            <ui:DataBinding property="value" data-source-path="cardName" binding-mode="TwoWay"/>
+                        </Bindings>
+                    </ui:TextField>
+                    <ui:TextField label="Description" placeholder-text="Description of the card" hide-placeholder-on-focus="true" multiline="true">
+                        <Bindings>
+                            <ui:DataBinding property="value" data-source-path="description" binding-mode="TwoWay"/>
+                        </Bindings>
+                    </ui:TextField>
+                    <ui:DropdownField label="Type" choices="Monster,Spell" name="type-dropdown" index="1"/>
+                    <ui:DropdownField label="Sub-Type" choices="Action,Reaction,Both" name="spell-type-dropdown" index="0">
+                        <Bindings>
+                            <ui:DataBinding property="index" data-source-path="subType" binding-mode="TwoWay"/>
+                        </Bindings>
+                    </ui:DropdownField>
+                    <ui:DropdownField label="Sub-Type" choices="Normal,Sacrifice,Win" name="monster-type-dropdown" index="0" style="display: none;">
+                        <Bindings>
+                            <ui:DataBinding property="index" data-source-path="subType" binding-mode="TwoWay"/>
+                        </Bindings>
+                    </ui:DropdownField>
+                    <uie:ObjectField label="Sprite" value="" type="UnityEngine.Sprite, UnityEngine.CoreModule">
+                        <Bindings>
+                            <ui:DataBinding property="value" data-source-path="sprite" binding-mode="TwoWay"/>
+                        </Bindings>
+                    </uie:ObjectField>
+                </ui:VisualElement>
+                <ui:VisualElement name="monster-group" style="flex-grow: 1; display: none;">
+                    <ui:VisualElement style="flex-grow: 0; margin-top: 15px; margin-bottom: 15px;">
+                        <ui:Label text="Attributes" style="-unity-text-align: upper-left; -unity-font-style: bold; padding-left: 4px;"/>
+                        <ui:Toggle label="Toggle Unique Directional Move Values" name="unique-move-toggle"/>
+                        <ui:IntegerField label="Move" value="0" name="move-integer-field">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="move" binding-mode="TwoWay"/>
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:VisualElement name="unique-move-group" style="flex-grow: 1; flex-direction: row; padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 15px; display: none;">
+                            <ui:VisualElement style="flex-grow: 1; flex-direction: column;">
+                                <ui:IntegerField label="Forward" value="0" style="width: 150px;"/>
+                                <ui:IntegerField label="Back" value="0" style="width: 150px;"/>
+                                <ui:IntegerField label="Left" value="0" style="width: 150px;"/>
+                                <ui:IntegerField label="Right" value="0" style="width: 150px;"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1;">
+                                <ui:IntegerField label="Forward Left" value="0" name="" style="width: 150px;"/>
+                                <ui:IntegerField label="Forward Right" value="0" style="width: 150px;"/>
+                                <ui:IntegerField label="Back Left" value="0" style="width: 150px;"/>
+                                <ui:IntegerField label="Back Right" value="0" style="width: 150px;"/>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:IntegerField label="Attack" value="0">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="attack" binding-mode="TwoWay"/>
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:IntegerField label="Rush Multiplier" value="0">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="rushMultiplier" binding-mode="TwoWay"/>
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="Movement Descriptor" style="-unity-text-align: upper-left; -unity-font-style: bold; padding-left: 4px; padding-top: 10px;"/>
+                        <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+                            <ui:VisualElement style="flex-grow: 1;">
+                                <ui:Toggle label="Forward" name="forward-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[0]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                                <ui:Toggle name="back-toggle" label="Back">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[1]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                                <ui:Toggle label="Left" name="left-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[2]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                                <ui:Toggle label="Right" name="right-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[3]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1;">
+                                <ui:Toggle label="Forward Left" name="forward-left-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[4]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                                <ui:Toggle label="Forward Right" name="forward-right-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[5]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                                <ui:Toggle label="Back Left" name="back-left-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[6]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                                <ui:Toggle label="Back Right" name="back-right-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="directions[7]" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 1;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0; justify-content: center; flex-direction: row;">
+                <ui:Button text="Create Card" name="create-card-button" class="button" style="padding-left: 15px; padding-right: 15px; background-color: rgb(143, 180, 255); color: rgb(255, 255, 255); -unity-font-style: bold; padding-top: 5px; padding-bottom: 5px; font-size: 14px;"/>
+                <ui:Button text="Clear" name="clear-card-button" class="button" style="padding-left: 15px; padding-right: 15px; background-color: rgb(255, 78, 61); color: rgb(255, 255, 255); -unity-font-style: bold; padding-top: 5px; padding-bottom: 5px; font-size: 14px;"/>
+                <ui:Button text="Delete Card" name="delete-card-button" class="button" style="padding-left: 15px; padding-right: 15px; background-color: rgb(207, 54, 56); color: rgb(255, 255, 255); -unity-font-style: bold; padding-top: 5px; padding-bottom: 5px; font-size: 14px; display: none;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="">
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+                <ui:DropdownField label="Cards" name="card-dropdown" style="padding-top: 15px; padding-left: 25px; padding-right: 5px; margin-right: 0; margin-left: 30px;"/>
+                <ui:Button text="X" name="card-dropdown-cancel-button" class="button" style="margin-top: 15px; background-color: rgb(106, 106, 106); color: rgb(255, 255, 255); display: none; padding-left: 5px;"/>
+            </ui:VisualElement>
+            <ui:Image source="project://database/Assets/Art/Textures/Renders/CardRenderTexture.renderTexture?fileID=8400000&amp;guid=f9f4a05092c9d3747bb5767dba24f259&amp;type=2#CardRenderTexture"/>
+            <ui:VisualElement style="flex-grow: 1; flex-direction: column-reverse;">
+                <ui:Button text="Refresh Card" name="refresh-card-button" class="button" style="padding-left: 0; padding-right: 0; background-color: rgb(93, 195, 111); color: rgb(255, 255, 255); -unity-font-style: bold; padding-top: 5px; padding-bottom: 5px; font-size: 14px; margin-right: 100px; margin-left: 100px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

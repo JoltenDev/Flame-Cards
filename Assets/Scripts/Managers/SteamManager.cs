@@ -13,6 +13,7 @@ using UnityEngine;
 #if !DISABLESTEAMWORKS
 using System.Collections;
 using Steamworks;
+using UnityEngine.SceneManagement;
 #endif
 
 //
@@ -22,6 +23,9 @@ using Steamworks;
 [DisallowMultipleComponent]
 public class SteamManager : MonoBehaviour
 {
+	[Header("Inital Scene")]
+	[SerializeField] string initialScene;
+
 #if !DISABLESTEAMWORKS
 	protected static bool s_EverInitialized = false;
 
@@ -78,7 +82,7 @@ public class SteamManager : MonoBehaviour
 		}
 
 		// We want our SteamManager Instance to persist across scenes.
-		DontDestroyOnLoad(gameObject);
+		//DontDestroyOnLoad(gameObject);
 
 		if (!Packsize.Test()) {
 			Debug.LogError("[Steamworks.NET] Packsize Test returned false, the wrong version of Steamworks.NET is being run in this platform.", this);
@@ -124,6 +128,8 @@ public class SteamManager : MonoBehaviour
 		}
 
 		s_EverInitialized = true;
+
+		SceneManager.LoadScene(initialScene, LoadSceneMode.Single);
 	}
 
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d1a12333bdc59434d9754424ddb4ee3f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_ViewDataDictionary: {instanceID: 0}
+  - blankCardData: {fileID: 11400000, guid: 52c91665515021a44b1abf04a88c3255, type: 2}
+  - visualTree: {fileID: 9197481963319205126, guid: 0475d5eeb76be89479ae8db293f71c88, type: 3}
+  - previewCamera: {fileID: 2044404638724117523, guid: bad197c83c7156347a85d704dfa57c95, type: 3}
+  - previewMonsterCard: {fileID: 1441749769030085682, guid: 2eae1741d96d9ff4981a5fa5ade10b5c, type: 3}
+  - previewSpellCard: {fileID: 7741377004047758926, guid: f271cfbde389a6444951314f5995b9a8, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
