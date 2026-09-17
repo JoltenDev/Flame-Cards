@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: 
   description: 
-  type: 2
+  type: 1
   subType: 0
   sprite: {fileID: 0}
   move: 0
   attack: 0
   rushMultiplier: 0
   directions: 0000000000000000
+  wallTraversal: 0

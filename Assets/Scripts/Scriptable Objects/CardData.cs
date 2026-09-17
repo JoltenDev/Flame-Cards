@@ -23,6 +23,7 @@ public class CardData : ScriptableObject
 
     [Header("Movement Descriptor")]
     [SerializeField] List<bool> directions = new List<bool>();
+    [SerializeField] bool wallTraversal;
 
     public string CardName { get { return cardName; } }
     public string Description { get { return description; } }
@@ -55,6 +56,7 @@ public class CardData : ScriptableObject
 
         for (int i = 0; i < directions.Count; i++)
             directions[i] = false;
+        wallTraversal = false;
     }
 
     public void CopyData(CardData other)
@@ -72,5 +74,6 @@ public class CardData : ScriptableObject
 
         for (int i = 0 ;i < directions.Count; i++)
             directions[i] = other.directions[i];
+        wallTraversal = other.wallTraversal;
     }
 }

@@ -92,6 +92,11 @@
                                         <ui:DataBinding property="value" data-source-path="directions[3]" binding-mode="TwoWay"/>
                                     </Bindings>
                                 </ui:Toggle>
+                                <ui:Toggle label="Wall Traversal" name="wall-traversal-toggle">
+                                    <Bindings>
+                                        <ui:DataBinding property="value" data-source-path="wallTraversal" binding-mode="TwoWay"/>
+                                    </Bindings>
+                                </ui:Toggle>
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-grow: 1;">
                                 <ui:Toggle label="Forward Left" name="forward-left-toggle">

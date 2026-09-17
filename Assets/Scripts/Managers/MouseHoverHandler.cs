@@ -12,6 +12,9 @@ public class MouseHoverHandler : MonoBehaviour
     [Header("Cards")]
     [SerializeField] Card selectedHandCard;
     [SerializeField] Card selectedPlacedCard;
+
+    Card previousSelectedHandCard;
+
     [SerializeField] CardLayoutGroup mCardLayoutGroup;
     [SerializeField] CardLayoutGroup sCardLayoutGroup;
 
@@ -63,6 +66,9 @@ public class MouseHoverHandler : MonoBehaviour
 
                 gridHightlight.MakeBlocksAvailable();
             }
+
+            //mCardLayoutGroup.SelectCard(currentCard);
+            //sCardLayoutGroup.SelectCard(currentCard);
         }
         else if (!gridHovered)
         {

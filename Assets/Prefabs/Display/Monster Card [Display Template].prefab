@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1133776377521672993}
   - component: {fileID: 6182926617457610869}
   - component: {fileID: 5866243037123896417}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Sacrifice [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8700047185484780835}
   - component: {fileID: 4760601100580332327}
   - component: {fileID: 8320525717507882319}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 4747733663512905313}
   - component: {fileID: 7760181775054197009}
   - component: {fileID: 6132814078776512485}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Rush [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 7434191589322702516}
   - component: {fileID: 6262389518097170026}
   - component: {fileID: 8408677016517127182}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 3069929126721659167}
   - component: {fileID: 7277915698001809947}
   - component: {fileID: 1361638968341106295}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Attack [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,8 +569,9 @@ GameObject:
   - component: {fileID: 6803674962073911338}
   - component: {fileID: 4399005402640139077}
   - component: {fileID: -8389711014696537225}
-  m_Layer: 6
-  m_Name: 'Monster Card [Template]'
+  - component: {fileID: 6275927296130870150}
+  m_Layer: 31
+  m_Name: 'Monster Card [Display Template]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -718,6 +719,21 @@ MonoBehaviour:
   subTypes:
   - {fileID: 1552147409950567865}
   - {fileID: 2566604418360135669}
+--- !u!114 &6275927296130870150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441749769030085682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c6e63a1ef065749b3546a64b854b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardUIBinder
+  cardData: {fileID: 11400000, guid: 52c91665515021a44b1abf04a88c3255, type: 2}
+  bindType: 1
+  cardUI: {fileID: -8389711014696537225}
 --- !u!1 &1552147409950567865
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,7 +743,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7793781747533916612}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Sacrifice [Tab]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -767,7 +783,7 @@ GameObject:
   - component: {fileID: 1178339701337062854}
   - component: {fileID: 3649771609782845146}
   - component: {fileID: 6493275410430490717}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Type [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -904,7 +920,7 @@ GameObject:
   - component: {fileID: 6299775244992156682}
   - component: {fileID: 3288765934751818336}
   - component: {fileID: 6338895608308873161}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,7 +992,7 @@ GameObject:
   - component: {fileID: 8185685422254511658}
   - component: {fileID: 2037992013213539498}
   - component: {fileID: 586279627396957855}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1046,7 +1062,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2785041310339348480}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Win Condition [Tab]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1086,7 +1102,7 @@ GameObject:
   - component: {fileID: 9167665093227169901}
   - component: {fileID: 7357188022071312891}
   - component: {fileID: 500724963794718880}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Left]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1161,7 +1177,7 @@ GameObject:
   - component: {fileID: 8349766613948871355}
   - component: {fileID: 1268672281886951809}
   - component: {fileID: 825136310045917605}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Win Condition [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,7 +1314,7 @@ GameObject:
   - component: {fileID: 154318111110536693}
   - component: {fileID: 5435419367250098958}
   - component: {fileID: 7873292152163335575}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Right]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1373,7 +1389,7 @@ GameObject:
   - component: {fileID: 341203582357903244}
   - component: {fileID: 5918673696018413518}
   - component: {fileID: 6732847328726431791}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrows [Image]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1457,7 +1473,7 @@ GameObject:
   - component: {fileID: 3273344744145690201}
   - component: {fileID: 4710472946428327858}
   - component: {fileID: 4635626952091959459}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Front [Canvas]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1573,7 +1589,7 @@ GameObject:
   - component: {fileID: 7582004494104990858}
   - component: {fileID: 3297136631863187332}
   - component: {fileID: 1887375799901370050}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1645,7 +1661,7 @@ GameObject:
   - component: {fileID: 1596120508269061661}
   - component: {fileID: 8633686657645099388}
   - component: {fileID: 4074300398844308642}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Down]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1720,7 +1736,7 @@ GameObject:
   - component: {fileID: 2469179009902219029}
   - component: {fileID: 7148119834992250791}
   - component: {fileID: 1778526100037359159}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1792,7 +1808,7 @@ GameObject:
   - component: {fileID: 3667028399625033217}
   - component: {fileID: 5256828498693301680}
   - component: {fileID: 4628216317003933536}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Name [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1945,7 @@ GameObject:
   - component: {fileID: 155685268332048822}
   - component: {fileID: 419553386191657977}
   - component: {fileID: 4499247685437256535}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Sprite [Image]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2004,7 +2020,7 @@ GameObject:
   - component: {fileID: 3610294255397337326}
   - component: {fileID: 8828833013007541870}
   - component: {fileID: 4706099500180520000}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Up Left]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2079,7 +2095,7 @@ GameObject:
   - component: {fileID: 6665171479427789935}
   - component: {fileID: 6337699119114216585}
   - component: {fileID: 1680501224801661116}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2151,7 +2167,7 @@ GameObject:
   - component: {fileID: 3900521265964440305}
   - component: {fileID: 5036491694671207965}
   - component: {fileID: 4247540532423258977}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2223,7 +2239,7 @@ GameObject:
   - component: {fileID: 1771525445623360306}
   - component: {fileID: 4838266206560474268}
   - component: {fileID: 4591623738411363848}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Description [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2360,7 +2376,7 @@ GameObject:
   - component: {fileID: 8717131400225442722}
   - component: {fileID: 8806344047101531736}
   - component: {fileID: 743118443634153210}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Up]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2435,7 +2451,7 @@ GameObject:
   - component: {fileID: 416029422310845690}
   - component: {fileID: 8931940011794767480}
   - component: {fileID: 3681662227015359470}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2507,7 +2523,7 @@ GameObject:
   - component: {fileID: 278742256259262758}
   - component: {fileID: 7413845355027695864}
   - component: {fileID: 567460406686859192}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Movement [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2644,7 +2660,7 @@ GameObject:
   - component: {fileID: 1835537644881348080}
   - component: {fileID: 8226365006926449910}
   - component: {fileID: 3366827609795031805}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Down Right]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2719,7 +2735,7 @@ GameObject:
   - component: {fileID: 6557774113432315211}
   - component: {fileID: 8760095922712047167}
   - component: {fileID: 8316690143309429316}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2792,7 +2808,7 @@ GameObject:
   - component: {fileID: 8071407746767331750}
   - component: {fileID: 7560397922828067561}
   - component: {fileID: 5591297428630545767}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Back [Canvas]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2894,7 +2910,7 @@ GameObject:
   - component: {fileID: 1860318164317116357}
   - component: {fileID: 1580457296939359810}
   - component: {fileID: 2779565545865924875}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Up Right]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2969,7 +2985,7 @@ GameObject:
   - component: {fileID: 81787709721661659}
   - component: {fileID: 7171653133660231524}
   - component: {fileID: 4151829456713758724}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Arrow [Down Left]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}

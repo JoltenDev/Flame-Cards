@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9140964104386712969}
   - component: {fileID: 400949100868650738}
   - component: {fileID: 2118542911205929205}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 4953433564335058863}
   - component: {fileID: 3873177907522377314}
   - component: {fileID: 343447051530182950}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Description [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 2418421400668914037}
   - component: {fileID: 247099067124304570}
   - component: {fileID: 449261191067039863}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5271540991983586813}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Action [Tab]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 3024022032410775949}
   - component: {fileID: 1458703840625790156}
   - component: {fileID: 1043361818709617840}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 3053372155879149616}
   - component: {fileID: 1257243093696016144}
   - component: {fileID: 7500051384327371421}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 4832535494668780291}
   - component: {fileID: 7619482856272607752}
   - component: {fileID: 8895351543246986351}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Action [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +612,7 @@ GameObject:
   - component: {fileID: 8594299560118140752}
   - component: {fileID: 4173585533874806834}
   - component: {fileID: 7918605601913102980}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Back [Canvas]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -715,7 +715,7 @@ GameObject:
   - component: {fileID: 7032583225163543888}
   - component: {fileID: 9179026496117744021}
   - component: {fileID: 1425679096749454409}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Front [Canvas]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -823,7 +823,7 @@ GameObject:
   - component: {fileID: 6209424864920748854}
   - component: {fileID: 1620387289604113527}
   - component: {fileID: 3389359427305047893}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -893,7 +893,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4524905991297233360}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Reaction [Tab]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -933,7 +933,7 @@ GameObject:
   - component: {fileID: 3862949111364337973}
   - component: {fileID: 6628871709795850843}
   - component: {fileID: 1039048284203174393}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Type [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -987,7 +987,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: S
+  m_text: M
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1070,7 +1070,7 @@ GameObject:
   - component: {fileID: 8621704969961803394}
   - component: {fileID: 8373510000225140719}
   - component: {fileID: 4245781036027854234}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,7 +1142,7 @@ GameObject:
   - component: {fileID: 5148296459476896193}
   - component: {fileID: 2452989170189389424}
   - component: {fileID: 846792688799199822}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Name [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1282,8 +1282,9 @@ GameObject:
   - component: {fileID: 5342387745086047139}
   - component: {fileID: 3933014064464739476}
   - component: {fileID: -3019464452664851972}
-  m_Layer: 6
-  m_Name: 'Spell Card [Template]'
+  - component: {fileID: 8409875119693343219}
+  m_Layer: 31
+  m_Name: 'Spell Card [Display Template]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1423,6 +1424,21 @@ MonoBehaviour:
   subTypes:
   - {fileID: 2596750936567074173}
   - {fileID: 5010835799665385426}
+--- !u!114 &8409875119693343219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7741377004047758926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c6e63a1ef065749b3546a64b854b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardUIBinder
+  cardData: {fileID: 11400000, guid: 52c91665515021a44b1abf04a88c3255, type: 2}
+  bindType: 2
+  cardUI: {fileID: -3019464452664851972}
 --- !u!1 &8647520530655183760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,7 +1450,7 @@ GameObject:
   - component: {fileID: 5554917697056843758}
   - component: {fileID: 3468084201293716643}
   - component: {fileID: 2333542480270266032}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Sprite [Image]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1509,7 +1525,7 @@ GameObject:
   - component: {fileID: 997799769583797632}
   - component: {fileID: 5158795168921841630}
   - component: {fileID: 7073109250398211299}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: 'Reaction [Text]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}

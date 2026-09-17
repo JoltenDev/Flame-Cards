@@ -60,7 +60,7 @@ public class CardEditor : EditorWindow
             cardField.RegisterValueChangedCallback(OnCardDropdown);
 
         clonedCamera = Instantiate(previewCamera, new Vector3(0, 0, 0), Quaternion.identity);
-        clonedCard = Instantiate(previewSpellCard, new Vector3(0, 0, 0.89f), Quaternion.identity, clonedCamera.transform);
+        clonedCard = Instantiate(previewSpellCard, new Vector3(0, 0, 1f), Quaternion.identity, clonedCamera.transform);
 
         if (typeField != null)
         {
@@ -204,7 +204,7 @@ public class CardEditor : EditorWindow
 
             blankCardData.Type = CardData.CardTypes.Monster;
 
-            clonedCard = Instantiate(previewMonsterCard, new Vector3(0, 0, 0.89f), Quaternion.identity, clonedCamera.transform);
+            clonedCard = Instantiate(previewMonsterCard, new Vector3(0, 0, 1f), Quaternion.identity, clonedCamera.transform);
         }
         else
         {
@@ -214,7 +214,7 @@ public class CardEditor : EditorWindow
 
             blankCardData.Type = CardData.CardTypes.Spell;
 
-            clonedCard = Instantiate(previewSpellCard, new Vector3(0, 0, 0.89f), Quaternion.identity, clonedCamera.transform);
+            clonedCard = Instantiate(previewSpellCard, new Vector3(0, 0, 1f), Quaternion.identity, clonedCamera.transform);
         }
     }
 
