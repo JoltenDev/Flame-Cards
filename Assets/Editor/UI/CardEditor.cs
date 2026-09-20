@@ -248,8 +248,8 @@ public class CardEditor : EditorWindow
         cardField.choices.Clear();
 
         cardDatas.Clear();
-        GetCards(ref cardDatas, "Monsters");
-        GetCards(ref cardDatas, "Spells");
+        GetCards(ref cardDatas, "Assets/Resources/Cards/Monsters");
+        GetCards(ref cardDatas, "Assets/Resources/Cards/Spells");
 
         foreach (var data in cardDatas)
         {
@@ -257,10 +257,8 @@ public class CardEditor : EditorWindow
         }
     }
 
-    void GetCards(ref List<CardData> cardDatas, string cards)
+    void GetCards(ref List<CardData> cardDatas, string path)
     {
-        string path = Path.Combine(Application.dataPath, $"Scripts/Scriptable Objects/Cards/{cards}");
-
         if (!Directory.Exists(path))
         {
             Debug.LogError($"Directory not found: {path}");
@@ -270,7 +268,7 @@ public class CardEditor : EditorWindow
         string[] cardAssets = Directory.GetFiles(path, "*.asset", SearchOption.TopDirectoryOnly);
         foreach (var asset in cardAssets)
         {
-            string relativePath = "Assets" + asset.Substring(Application.dataPath.Length);
+            string relativePath = asset;
             relativePath = relativePath.Replace("\\", "/");
 
             CardData card = AssetDatabase.LoadAssetAtPath<CardData>(relativePath);
@@ -289,7 +287,7 @@ public class CardEditor : EditorWindow
     string GetTargetPath()
     {
         string folder = blankCardData.Type == CardData.CardTypes.Monster ? "Monsters" : "Spells";
-        return $"Assets/Scripts/Scriptable Objects/Cards/{folder}/{blankCardData.CardName} [CardData].asset";
+        return $"Assets/Resources/Cards/{folder}/{blankCardData.CardName} [CardData].asset";
     }
 
     void BindCardDataToUI()

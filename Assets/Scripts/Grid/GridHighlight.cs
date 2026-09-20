@@ -66,7 +66,7 @@ public class GridHighlight : MonoBehaviour
         }
     }
 
-    private int GetLength()
+    public int GetLength()
     {
         return gridBuilder.GetLength();
     }

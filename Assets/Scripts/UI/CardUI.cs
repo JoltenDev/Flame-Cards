@@ -20,6 +20,8 @@ public class CardUI : MonoBehaviour
     [SerializeField] List<GameObject> directionArrows = new List<GameObject>();
     [SerializeField] List<GameObject> subTypes = new List<GameObject>();
 
+    public enum UIType { Name, Description, Move, Attack, Rush }
+
     public void SetData(CardData cardData)
     {
         this.cardData = cardData;
@@ -80,6 +82,16 @@ public class CardUI : MonoBehaviour
             case 2: // Both
                 if (subTypes[0] != null) subTypes[0].SetActive(true);
                 if (subTypes[1] != null) subTypes[1].SetActive(true);
+                break;
+        }
+    }
+
+    public void ModifyUI(UIType type, string text)
+    {
+        switch (type)
+        {
+            case UIType.Move:
+                moveText.text = text;
                 break;
         }
     }

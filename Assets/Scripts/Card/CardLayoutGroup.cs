@@ -28,7 +28,7 @@ public class CardLayoutGroup : MonoBehaviour
     {
         if (card != null)
         {
-            if (card.GetData().Type != bindType)
+            if (card.Data.Type != bindType)
             {
                 selectedCard = null;
                 DisplayCard(selectedCard);
@@ -50,7 +50,7 @@ public class CardLayoutGroup : MonoBehaviour
 
         if (card == null) return;
 
-        var clonedCard = card.CreateClone(selectedCardSlot, 0);
+        var clonedCard = card.CreateClone(selectedCardSlot, 0, true);
         displayedCard = clonedCard.GetComponent<Card>();
     }
 

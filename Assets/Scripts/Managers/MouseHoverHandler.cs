@@ -66,9 +66,6 @@ public class MouseHoverHandler : MonoBehaviour
 
                 gridHightlight.MakeBlocksAvailable();
             }
-
-            //mCardLayoutGroup.SelectCard(currentCard);
-            //sCardLayoutGroup.SelectCard(currentCard);
         }
         else if (!gridHovered)
         {
@@ -104,12 +101,26 @@ public class MouseHoverHandler : MonoBehaviour
             {
                 if (!currentGridBlock.HasCard()) // Block does not have a card, place and select the new card
                 {
+                    if (selectedHandCard != null && selectedHandCard.Data.Type == CardData.CardTypes.Spell)
+                        return;
+
                     currentGridBlock.RemoveCard(true);
 
-                    if (selectedHandCard != null && currentGridBlock.Available)
+                    if (selectedHandCard != null && currentGridBlock.Available) // Placed a card from hand
+                    {
                         selectedPlacedCard = currentGridBlock.PlaceCard(ref selectedHandCard);
-                    if (selectedPlacedCard != null && currentGridBlock.Available)
+                        selectedPlacedCard.ApplyStats();
+
+                        int relativePosition = currentGridBlock.Row;
+                        int relativeHorizontalPosition = (currentGridBlock.Position % gridHightlight.GetLength()) + currentGridBlock.Row;
+                        selectedPlacedCard.Move(0, relativePosition, relativeHorizontalPosition);
+                    }
+                    else if (selectedPlacedCard != null && currentGridBlock.Available) // Placed a card previously placed
+                    {
                         selectedPlacedCard = currentGridBlock.PlaceCard(ref selectedPlacedCard);
+
+                        MoveCard(currentGridBlock);
+                    }
 
                     if (selectedPlacedCard != null)
                     {
@@ -126,22 +137,57 @@ public class MouseHoverHandler : MonoBehaviour
                 }
                 else // Block has a card
                 {
+                    if (selectedPlacedCard != null)
+                    {
+                        selectedPlacedCard.Scale(false);
+                    }
+
+                    selectedHandCard = null;
                     selectedPlacedCard = currentGridBlock.GetCard();
                     selectedPlacedCard.Scale();
+
+                    mCardLayoutGroup.SelectCard(null);
+                    sCardLayoutGroup.SelectCard(null);
 
                     mCardLayoutGroup.DisplayCard(selectedPlacedCard);
                     sCardLayoutGroup.DisplayCard(selectedPlacedCard);
 
+                    int steps = selectedPlacedCard.Steps;
+
                     gridHightlight.MakeBlocksUnavailable();
-                    gridHightlight.HighlightBlocks(currentGridBlock.Position, fSteps: 5, bSteps: 5, lSteps: 5, rSteps: 5, flSteps: 5, frSteps: 5, blSteps: 5, brSteps: 5);
+                    gridHightlight.HighlightBlocks(currentGridBlock.Position, fSteps: steps, bSteps: steps, lSteps: steps, rSteps: steps, flSteps: steps, frSteps: steps, blSteps: steps, brSteps: steps);
                 }
             }
         }
+
+        if (selectedHandCard != null && selectedHandCard.Data.Type == CardData.CardTypes.Spell)
+            return;
 
         if (selectedHandCard != null)
             SelectObject(currentGridBlock, ref previousGridBlock, block => block.PlaceCard(ref selectedHandCard, true), block => block.RemoveCard(true));
         if (selectedPlacedCard != null)
             SelectObject(currentGridBlock, ref previousGridBlock, block => block.PlaceCard(ref selectedPlacedCard, true), block => block.RemoveCard(true));
+    }
+
+    void MoveCard(GridBlock currentGridBlock)
+    {
+        int relativeHorizontalPosition = (currentGridBlock.Position % gridHightlight.GetLength()) + currentGridBlock.Row;
+        int relativePosition = currentGridBlock.Row;
+
+        if (selectedPlacedCard.Position == currentGridBlock.Row)
+        {
+            int cardPosition = selectedPlacedCard.HorizontalPosition;
+            int steps = Math.Abs(relativeHorizontalPosition - cardPosition);
+
+            selectedPlacedCard.Move(steps, relativePosition, relativeHorizontalPosition);
+        }
+        else
+        {
+            int cardPosition = selectedPlacedCard.Position;
+            int steps = Math.Abs(relativePosition - cardPosition);
+
+            selectedPlacedCard.Move(steps, relativePosition, relativeHorizontalPosition);
+        }
     }
 
     void SelectObject<T>(T newObj, ref T previousObject, Action<T> selectAction, Action<T> deselectAction) where T : UnityEngine.Object

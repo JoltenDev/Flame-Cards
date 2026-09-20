@@ -684,6 +684,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpandCard
   cardData: {fileID: 11400000, guid: 97b0919097a648f468b812860fb63315, type: 2}
+  cardUI: {fileID: -8389711014696537225}
+  steps: 0
+  attack: 0
   defaultScale: {x: 0.65, y: 1, z: 0.02}
   smallScale: {x: 0.52, y: 0.8, z: 0.016}
 --- !u!114 &-8389711014696537225

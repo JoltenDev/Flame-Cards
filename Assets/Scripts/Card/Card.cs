@@ -3,27 +3,49 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    [Header("Card Data")]
     [SerializeField] CardData cardData;
+    [SerializeField] CardUI cardUI;
 
+    [Header("Attributes")]
+    [SerializeField] int steps;
+    [SerializeField] int attack;
+
+    [Header("Grid Position")]
+    [SerializeField] int position;
+    [SerializeField] int horizontalPosition;
+
+    [Header("Selection Settings")]
     [SerializeField] Vector3 defaultScale = new Vector3(0.65f, 1, 0.02f);
     [SerializeField] Vector3 smallScale = new Vector3(0.65f / 1.25f, 1 / 1.25f, 0.02f / 1.25f);
 
     Coroutine scaleCoroutine;
 
-    public CardData GetData()
+    public CardData Data { get { return cardData; } set { cardData = value; } }
+    public int Steps { get { return steps; } }
+
+    public int Position { get { return position; } }
+    public int HorizontalPosition { get { return horizontalPosition; } }
+
+    public void ApplyStats()
     {
-        return cardData;
+        steps = cardData.Move;
+        attack = cardData.Attack;
     }
 
-    public Transform CreateClone(Transform parent, int layer)
+    public void Move(int amount, int newPosition, int newHPosition)
     {
-        var clonedCard = Instantiate(transform, parent);
-        clonedCard.localPosition = new Vector3(0, 0, 0);
-        clonedCard.localRotation = Quaternion.Euler(180, 0, 180);
-        clonedCard.gameObject.layer = layer;
-        clonedCard.name = "Card";
+        if (steps <= 0)
+        {
+            steps = 0;
+            return;
+        }
+        
+        position = newPosition;
+        horizontalPosition = newHPosition;
 
-        return clonedCard;
+        steps -= amount;
+        cardUI.ModifyUI(CardUI.UIType.Move, steps.ToString());
     }
 
     public void Scale(bool scale = true)
@@ -54,5 +76,22 @@ public class Card : MonoBehaviour
         }
 
         transform.localScale = newScale;
+    }
+
+    public Transform CreateClone(Transform parent, int layer, bool forDisplay = false)
+    {
+        var clonedCard = Instantiate(transform, parent);
+        clonedCard.localPosition = new Vector3(0, 0, 0);
+        clonedCard.localRotation = Quaternion.Euler(180, 0, 180);
+        clonedCard.gameObject.layer = layer;
+        clonedCard.name = "Card";
+
+        if (forDisplay)
+        {
+            clonedCard.localRotation = Quaternion.Euler(180, -10, 180);
+            clonedCard.localScale = new Vector3(0.65f, 1.1f, 0.03f);
+        }
+
+        return clonedCard;
     }
 }

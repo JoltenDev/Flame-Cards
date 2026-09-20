@@ -3,6 +3,7 @@ using UnityEngine;
 public class GridBlock : MonoBehaviour
 {
     [SerializeField] int position;
+    [SerializeField] int row;
     [SerializeField] bool available;
 
     [SerializeField] Transform placement;
@@ -12,6 +13,7 @@ public class GridBlock : MonoBehaviour
     [SerializeField] Card heldCardPreview;
 
     public int Position { get { return position; } set { position = value; } }
+    public int Row { get { return row; } set { row = value; } }
     public bool Available { get { return available; } set { available = value; } }
 
     public Card PlaceCard(ref Card card, bool preview = false)
@@ -28,7 +30,7 @@ public class GridBlock : MonoBehaviour
 
         if (clonedCard == null)
         {
-            Debug.LogError($"Could not find ExpandCard on instantiated object: {clonedCard.name}");
+            Debug.LogError($"Could not find Card on instantiated object: {clonedCard.name}");
             return null;
         }
 

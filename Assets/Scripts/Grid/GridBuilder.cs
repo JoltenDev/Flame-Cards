@@ -38,6 +38,7 @@ public class GridBuilder : MonoBehaviour
 
                 pos++;
                 clonedColumn.GetComponent<GridBlock>().Position = pos;
+                clonedColumn.GetComponent<GridBlock>().Row = i + 1;
 
                 columnSpacing += spacing;
 
