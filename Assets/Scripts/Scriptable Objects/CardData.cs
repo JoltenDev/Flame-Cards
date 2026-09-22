@@ -34,6 +34,7 @@ public class CardData : ScriptableObject
     public int Move { get { return move; } }
     public int Attack { get { return attack; } }
     public int RushMultiplier { get { return rushMultiplier; } }
+    public bool WallTraversal { get { return wallTraversal; } }
 
     public List<bool> Directions { get { return directions; } set { directions = value; } }
 

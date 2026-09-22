@@ -987,7 +987,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: M
+  m_text: S
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1397,7 +1397,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52400168e4f7eba44b5bd1679c281eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpandCard
+  amount: 0
   cardData: {fileID: 11400000, guid: c664bfd2221c75947bceeb54f6ca62e9, type: 2}
+  cardUI: {fileID: 0}
+  steps: 0
+  attack: 0
+  placed: 0
+  position: 0
+  horizontalPosition: 0
   defaultScale: {x: 0.65, y: 1, z: 0.02}
   smallScale: {x: 0.52, y: 0.8, z: 0.016}
 --- !u!114 &-3019464452664851972

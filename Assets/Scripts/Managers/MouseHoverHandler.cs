@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,21 +7,19 @@ public class MouseHoverHandler : MonoBehaviour
 {
     [Header("Hover Settings")]
     [SerializeField] float mouseSelectionDistance;
-    [SerializeField] LayerMask cardLayerMask;
+    [SerializeField] LayerMask itemLayerMask;
     [SerializeField] LayerMask gridLayerMask;
 
-    [Header("Cards")]
-    [SerializeField] Card selectedHandCard;
-    [SerializeField] Card selectedPlacedCard;
+    [Header("Selected Grid Item")]
+    [SerializeField] GridItem selectedItem;
 
-    Card previousSelectedHandCard;
-
+    [Header("Card Groups")]
     [SerializeField] CardLayoutGroup mCardLayoutGroup;
     [SerializeField] CardLayoutGroup sCardLayoutGroup;
 
     [Header("Grid")]
     GridBlock previousGridBlock;
-    [SerializeField] GridHighlight gridHightlight;
+    [SerializeField] GridSelect gridSelect;
 
     Camera mainCamera;
     Controls controls;
@@ -44,41 +43,49 @@ public class MouseHoverHandler : MonoBehaviour
 
     void HoverCard(Ray ray)
     {
-        Card currentCard = null;
+        GridItem item = null;
 
-        bool cardHovered = Physics.Raycast(ray, out RaycastHit hit, mouseSelectionDistance, cardLayerMask);
+        bool itemHovered = Physics.Raycast(ray, out RaycastHit hit, mouseSelectionDistance, itemLayerMask);
         bool gridHovered = Physics.Raycast(ray, out RaycastHit _, mouseSelectionDistance, gridLayerMask);
 
-        if (cardHovered)
+        if (itemHovered) // Grid item is hovered
         {
-            hit.transform.TryGetComponent(out currentCard);
+            hit.transform.TryGetComponent(out item);
 
-            if (controls.Player.Attack.WasPressedThisFrame()) // Card in hand is hovered, player clicked on card, selecting that card
+            if (controls.Player.Attack.WasPressedThisFrame()) // Grid item is clicked, select item
             {
-                if (selectedPlacedCard != null)
-                    selectedPlacedCard.Scale(false);
+                gridSelect.DeselectBlocks();
 
-                selectedHandCard = currentCard;
-                selectedPlacedCard = null;
+                if (selectedItem != null && selectedItem.CompareTag("Card"))
+                    selectedItem.GetComponent<Card>().Scale(false);
 
-                mCardLayoutGroup.SelectCard(selectedHandCard);
-                sCardLayoutGroup.SelectCard(selectedHandCard);
+                if (item.CompareTag("Card")) // Item is a card
+                {
+                    selectedItem = item.GetComponent<Card>();
 
-                gridHightlight.MakeBlocksAvailable();
+                    mCardLayoutGroup.SelectCard(selectedItem.GetComponent<Card>());
+                    sCardLayoutGroup.SelectCard(selectedItem.GetComponent<Card>());
+                }
+
+                if (item.CompareTag("Wall")) // Item is a wall
+                {
+                    selectedItem = item.GetComponent<Wall>();
+                    DeselectItem(false);
+                }
+
+                if (item.CompareTag("Jumppad"))
+                {
+                    selectedItem = item.GetComponent<Jumppad>();
+                    DeselectItem(false);
+                }
             }
         }
         else if (!gridHovered)
         {
-            if (controls.Player.Attack.WasPressedThisFrame()) // Card in hand is not hovered, player clicked on nothing, deselecting selected card
+            if (controls.Player.Attack.WasPressedThisFrame()) // Nothing was clicked, deselect item
             {
-                if (selectedPlacedCard != null)
-                    selectedPlacedCard.Scale(false);
-
-                selectedHandCard = null;
-                selectedPlacedCard = null;
-
-                mCardLayoutGroup.SelectCard(null);
-                sCardLayoutGroup.SelectCard(null);
+                DeselectItem();
+                gridSelect.DeselectBlocks();
             }
         }
     }
@@ -87,106 +94,90 @@ public class MouseHoverHandler : MonoBehaviour
     {
         GridBlock currentGridBlock = null;
 
-        bool cardHovered = Physics.Raycast(ray, out RaycastHit _, mouseSelectionDistance, cardLayerMask);
+        bool itemHovered = Physics.Raycast(ray, out RaycastHit _, mouseSelectionDistance, itemLayerMask);
         bool gridHovered = Physics.Raycast(ray, out RaycastHit hit, mouseSelectionDistance, gridLayerMask);
 
-        if (controls.Player.Attack.WasPressedThisFrame())
-            gridHightlight.UnHighlightBlocks();
-
-        if (gridHovered && !cardHovered)
+        if (gridHovered && !itemHovered)
         {
             hit.transform.TryGetComponent(out currentGridBlock);
 
             if (controls.Player.Attack.WasPressedThisFrame()) // Grid block is hovered, player clicked on block
             {
-                if (!currentGridBlock.HasCard()) // Block does not have a card, place and select the new card
-                {
-                    if (selectedHandCard != null && selectedHandCard.Data.Type == CardData.CardTypes.Spell)
-                        return;
-
-                    currentGridBlock.RemoveCard(true);
-
-                    if (selectedHandCard != null && currentGridBlock.Available) // Placed a card from hand
-                    {
-                        selectedPlacedCard = currentGridBlock.PlaceCard(ref selectedHandCard);
-                        selectedPlacedCard.ApplyStats();
-
-                        int relativePosition = currentGridBlock.Row;
-                        int relativeHorizontalPosition = (currentGridBlock.Position % gridHightlight.GetLength()) + currentGridBlock.Row;
-                        selectedPlacedCard.Move(0, relativePosition, relativeHorizontalPosition);
-                    }
-                    else if (selectedPlacedCard != null && currentGridBlock.Available) // Placed a card previously placed
-                    {
-                        selectedPlacedCard = currentGridBlock.PlaceCard(ref selectedPlacedCard);
-
-                        MoveCard(currentGridBlock);
-                    }
-
-                    if (selectedPlacedCard != null)
-                    {
-                        selectedPlacedCard.Scale(false);
-
-                        selectedHandCard = null;
-                        selectedPlacedCard = null;
-
-                        mCardLayoutGroup.SelectCard(null);
-                        sCardLayoutGroup.SelectCard(null);
-
-                        gridHightlight.MakeBlocksAvailable();
-                    }
-                }
-                else // Block has a card
-                {
-                    if (selectedPlacedCard != null)
-                    {
-                        selectedPlacedCard.Scale(false);
-                    }
-
-                    selectedHandCard = null;
-                    selectedPlacedCard = currentGridBlock.GetCard();
-                    selectedPlacedCard.Scale();
-
-                    mCardLayoutGroup.SelectCard(null);
-                    sCardLayoutGroup.SelectCard(null);
-
-                    mCardLayoutGroup.DisplayCard(selectedPlacedCard);
-                    sCardLayoutGroup.DisplayCard(selectedPlacedCard);
-
-                    int steps = selectedPlacedCard.Steps;
-
-                    gridHightlight.MakeBlocksUnavailable();
-                    gridHightlight.HighlightBlocks(currentGridBlock.Position, fSteps: steps, bSteps: steps, lSteps: steps, rSteps: steps, flSteps: steps, frSteps: steps, blSteps: steps, brSteps: steps);
-                }
+                SelectBlock(currentGridBlock);
             }
         }
 
-        if (selectedHandCard != null && selectedHandCard.Data.Type == CardData.CardTypes.Spell)
+        if (ItemIsSpellCard())
             return;
 
-        if (selectedHandCard != null)
-            SelectObject(currentGridBlock, ref previousGridBlock, block => block.PlaceCard(ref selectedHandCard, true), block => block.RemoveCard(true));
-        if (selectedPlacedCard != null)
-            SelectObject(currentGridBlock, ref previousGridBlock, block => block.PlaceCard(ref selectedPlacedCard, true), block => block.RemoveCard(true));
+        if (selectedItem != null)
+            SelectObject(currentGridBlock, ref previousGridBlock, block => block.PlaceObject(ref selectedItem, true), block => block.RemoveObject(preview: true));
     }
 
-    void MoveCard(GridBlock currentGridBlock)
+    void SelectBlock(GridBlock block)
     {
-        int relativeHorizontalPosition = (currentGridBlock.Position % gridHightlight.GetLength()) + currentGridBlock.Row;
-        int relativePosition = currentGridBlock.Row;
+        bool hasCard = block.Occupied<Card>(out Card card);
+        bool hasWall = block.Occupied<Wall>(out Wall wall);
+        bool blocked = hasCard || hasWall;
 
-        if (selectedPlacedCard.Position == currentGridBlock.Row)
+        if (!blocked) // Block does not have anything on it, place an item
         {
-            int cardPosition = selectedPlacedCard.HorizontalPosition;
-            int steps = Math.Abs(relativeHorizontalPosition - cardPosition);
+            if (ItemIsSpellCard())
+                return;
 
-            selectedPlacedCard.Move(steps, relativePosition, relativeHorizontalPosition);
+            block.RemoveObject(preview: true);
+
+            TryPlaceCard(block);
+            TryPlaceWall(block);
+            TryPlaceJumppad(block);
+
+            gridSelect.DeselectBlocks();
         }
-        else
+        else if (card != null) // Block is occupied by a card
         {
-            int cardPosition = selectedPlacedCard.Position;
-            int steps = Math.Abs(relativePosition - cardPosition);
+            if (selectedItem != null && selectedItem.CompareTag("Card"))
+            {
+                selectedItem.GetComponent<Card>().Scale(false);
+            }
 
-            selectedPlacedCard.Move(steps, relativePosition, relativeHorizontalPosition);
+            selectedItem = card;
+            selectedItem.GetComponent<Card>().Scale();
+
+            mCardLayoutGroup.SelectCard(null);
+            sCardLayoutGroup.SelectCard(null);
+
+            mCardLayoutGroup.DisplayCard(selectedItem.GetComponent<Card>());
+            sCardLayoutGroup.DisplayCard(selectedItem.GetComponent<Card>());
+
+            List<bool> directions = selectedItem.GetComponent<Card>().Data.Directions;
+            int steps = selectedItem.GetComponent<Card>().Steps;
+            bool elevated = selectedItem.GetComponent<Card>().Data.WallTraversal;
+
+            int forward = directions[0] ? steps : 0;
+            int back = directions[1] ? steps : 0;
+            int left = directions[2] ? steps : 0;
+            int right = directions[3] ? steps : 0;
+            int forwardLeft = directions[4] ? steps : 0;
+            int forwardRight = directions[5] ? steps : 0;
+            int backLeft = directions[6] ? steps : 0;
+            int backRight = directions[7] ? steps : 0;
+
+            gridSelect.SelectBlocks(block.Position, fSteps: forward, bSteps: back, lSteps: left, rSteps: right, 
+                flSteps: forwardLeft, frSteps: forwardRight, blSteps: backLeft, brSteps: backRight, elevated);
+        }
+        else if (wall != null) // Block is occupied by a wall
+        {
+            if (selectedItem != null && selectedItem.CompareTag("Card") && selectedItem.GetComponent<Card>().Data.WallTraversal)
+            {
+                if (ItemIsSpellCard())
+                    return;
+
+                block.RemoveObject(preview: true);
+
+                TryPlaceCard(block);
+
+                gridSelect.DeselectBlocks();
+            }
         }
     }
 
@@ -206,5 +197,97 @@ public class MouseHoverHandler : MonoBehaviour
         }
         
         previousObject = newObj;
+    }
+
+    void DeselectItem(bool nullSelected = true)
+    {
+        if (selectedItem == null) return;
+
+        if (selectedItem.CompareTag("Card") && selectedItem.GetComponent<Card>() != null)
+            selectedItem.GetComponent<Card>().Scale(false);
+
+        if (nullSelected)
+            selectedItem = null;
+
+        mCardLayoutGroup.SelectCard(null);
+        sCardLayoutGroup.SelectCard(null);
+    }
+
+    void TryPlaceCard(GridBlock block)
+    {
+        if (selectedItem == null || !selectedItem.CompareTag("Card")) return;
+
+        if (!selectedItem.GetComponent<Card>().Placed && block.Available) // Placed a card from hand
+        {
+            selectedItem = block.PlaceObject(ref selectedItem);
+
+            selectedItem.GetComponent<Card>().ApplyStats();
+            selectedItem.GetComponent<Card>().Placed = true;
+
+            MoveCard(block, true);
+        }
+        else if (selectedItem.GetComponent<Card>().Placed && block.Available) // Placed a card previously placed
+        {
+            selectedItem = block.PlaceObject(ref selectedItem);
+
+            MoveCard(block);
+        }
+
+        selectedItem.GetComponent<Card>().Scale(false);
+        selectedItem = null;
+
+        mCardLayoutGroup.SelectCard(null);
+        sCardLayoutGroup.SelectCard(null);
+    }
+
+    void TryPlaceWall(GridBlock block)
+    {
+        if (selectedItem == null || !selectedItem.CompareTag("Wall")) return;
+
+        if (block.Available)
+            block.PlaceObject(ref selectedItem);
+    }
+
+    void TryPlaceJumppad(GridBlock block)
+    {
+        if (selectedItem == null || !selectedItem.CompareTag("Jumppad")) return;
+
+        if (block.Available)
+            block.PlaceObject(ref selectedItem);
+    }
+
+    void MoveCard(GridBlock block, bool noSteps = false)
+    {
+        int relativeHorizontalPosition = (block.Position % gridSelect.GetLength()) + block.Row;
+        int relativePosition = block.Row;
+
+        if (noSteps)
+        {
+            int cardPosition = selectedItem.GetComponent<Card>().HorizontalPosition;
+            int steps = Math.Abs(relativeHorizontalPosition - cardPosition);
+
+            selectedItem.GetComponent<Card>().Move(0, relativePosition, relativeHorizontalPosition);
+            return;
+        }
+
+        if (selectedItem.GetComponent<Card>().Position == block.Row)
+        {
+            int cardPosition = selectedItem.GetComponent<Card>().HorizontalPosition;
+            int steps = Math.Abs(relativeHorizontalPosition - cardPosition);
+
+            selectedItem.GetComponent<Card>().Move(steps, relativePosition, relativeHorizontalPosition);
+        }
+        else
+        {
+            int cardPosition = selectedItem.GetComponent<Card>().Position;
+            int steps = Math.Abs(relativePosition - cardPosition);
+
+            selectedItem.GetComponent<Card>().Move(steps, relativePosition, relativeHorizontalPosition);
+        }
+    }
+
+    bool ItemIsSpellCard()
+    {
+        return selectedItem != null && selectedItem.CompareTag("Card") && selectedItem.GetComponent<Card>().Data.Type == CardData.CardTypes.Spell;
     }
 }

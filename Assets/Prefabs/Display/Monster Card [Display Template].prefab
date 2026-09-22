@@ -684,7 +684,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52400168e4f7eba44b5bd1679c281eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpandCard
+  amount: 0
   cardData: {fileID: 11400000, guid: 97b0919097a648f468b812860fb63315, type: 2}
+  cardUI: {fileID: 0}
+  steps: 0
+  attack: 0
+  placed: 0
+  position: 0
+  horizontalPosition: 0
   defaultScale: {x: 0.65, y: 1, z: 0.02}
   smallScale: {x: 0.52, y: 0.8, z: 0.016}
 --- !u!114 &-8389711014696537225

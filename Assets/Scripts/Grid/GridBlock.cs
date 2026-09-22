@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GridBlock : MonoBehaviour
@@ -6,72 +7,112 @@ public class GridBlock : MonoBehaviour
     [SerializeField] int row;
     [SerializeField] bool available;
 
+    [Header("Object Parent")]
     [SerializeField] Transform placement;
-    [SerializeField] int placedCardLayer;
 
-    [SerializeField] Card heldCard;
-    [SerializeField] Card heldCardPreview;
+    [Header("Object & Preview")]
+    [SerializeField] GridItem heldObject;
+    [SerializeField] GridItem heldObjectPreview;
+    [SerializeField] List<GridItem> previousHeldObjects = new List<GridItem>();
 
     public int Position { get { return position; } set { position = value; } }
     public int Row { get { return row; } set { row = value; } }
     public bool Available { get { return available; } set { available = value; } }
 
-    public Card PlaceCard(ref Card card, bool preview = false)
+    void Update()
+    {
+        if (heldObject == null && previousHeldObjects.Count > 0)
+        {
+            int lastIndex = previousHeldObjects.Count - 1;
+            GridItem restoredItem = previousHeldObjects[lastIndex];
+            previousHeldObjects.RemoveAt(lastIndex);
+
+            if (restoredItem != null)
+            {
+                heldObject = restoredItem;
+                heldObject.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public T PlaceObject<T>(ref T obj, bool preview = false) where T : GridItem
     {
         if (preview)
         {
-            if (heldCard != null || heldCardPreview != null)
+            if (heldObject != null || heldObjectPreview != null)
                 return null;
         }
 
-        var clonedCard = card.CreateClone(placement, 7);
-        if (preview)
-            clonedCard.name += " Preview";
+        var clonedObject = obj.CreateClone(placement);
 
-        if (clonedCard == null)
+        if (clonedObject == null)
         {
-            Debug.LogError($"Could not find Card on instantiated object: {clonedCard.name}");
+            Debug.LogError("Could not clone the object.");
             return null;
         }
 
         if (preview)
-            heldCardPreview = clonedCard.GetComponent<Card>();
+        {
+            clonedObject.name += " Preview";
+            heldObjectPreview = clonedObject;
+        }
         else
         {
-            heldCard = clonedCard.GetComponent<Card>();
-            Destroy(card.gameObject);
+            available = false;
+
+            if (heldObject != null)
+            {
+                previousHeldObjects.Add(heldObject);
+            }
+
+            obj.amount -= 1;
+            if (obj.amount <= 0)
+            {
+                Destroy(obj.gameObject);
+            }
+            
+            heldObject = clonedObject;
         }
 
-        return clonedCard.GetComponent<Card>();
+        return clonedObject as T;
     }
 
-    public void RemoveCard(bool preview = false)
+    public void RemoveObject(bool preview = false)
     {
         if (preview)
         {
-            if (heldCardPreview == null)
-                return;
+            if (heldObjectPreview == null) return;
 
-            Destroy(heldCardPreview.gameObject);
-            heldCardPreview = null;
-
+            Destroy(heldObjectPreview.gameObject);
+            heldObjectPreview = null;
             return;
         }
 
-        if (heldCard == null)
-            return;
+        if (heldObject != null)
+        {
+            Destroy(heldObject.gameObject);
+            heldObject = null;
+        }
 
-        Destroy(heldCard.gameObject);
-        heldCard = null;
+        if (!Occupied<GridItem>(out _))
+        {
+            available = true;
+        }
     }
 
-    public bool HasCard()
+    public bool Occupied<T>(out T item) where T : class
     {
-        return heldCard != null;
-    }
+        if (heldObject != null)
+        {
+            item = heldObject.GetComponent<T>() ?? heldObject as T;
 
-    public Card GetCard()
-    {
-        return heldCard;
+            if (item != null)
+            {
+                return true;
+            }
+        }
+
+        item = null;
+        return false;
     }
 }

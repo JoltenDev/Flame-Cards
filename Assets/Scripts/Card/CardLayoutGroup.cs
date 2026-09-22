@@ -50,7 +50,7 @@ public class CardLayoutGroup : MonoBehaviour
 
         if (card == null) return;
 
-        var clonedCard = card.CreateClone(selectedCardSlot, 0, true);
+        var clonedCard = card.CreateCardDisplay(selectedCardSlot, 0);
         displayedCard = clonedCard.GetComponent<Card>();
     }
 

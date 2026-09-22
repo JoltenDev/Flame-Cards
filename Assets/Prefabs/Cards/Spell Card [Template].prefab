@@ -1543,7 +1543,7 @@ GameObject:
   - component: {fileID: -3019464452664851972}
   m_Layer: 6
   m_Name: 'Spell Card [Template]'
-  m_TagString: Untagged
+  m_TagString: Card
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1655,10 +1655,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52400168e4f7eba44b5bd1679c281eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpandCard
+  amount: 1
   cardData: {fileID: 11400000, guid: c664bfd2221c75947bceeb54f6ca62e9, type: 2}
   cardUI: {fileID: -3019464452664851972}
   steps: 0
   attack: 0
+  placed: 0
+  position: 0
+  horizontalPosition: 0
   defaultScale: {x: 0.65, y: 1, z: 0.02}
   smallScale: {x: 0.52, y: 0.8, z: 0.016}
 --- !u!114 &-3019464452664851972
