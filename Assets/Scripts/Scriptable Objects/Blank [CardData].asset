@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: 
   description: 
-  type: 1
+  type: 2
   subType: 0
   sprite: {fileID: 0}
   move: 0

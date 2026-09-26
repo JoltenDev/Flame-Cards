@@ -93,6 +93,9 @@ public class CardUI : MonoBehaviour
             case UIType.Move:
                 moveText.text = text;
                 break;
+            case UIType.Attack:
+                attackText.text = $"ATK: {text}";
+                break;
         }
     }
 }

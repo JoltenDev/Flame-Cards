@@ -10,29 +10,38 @@ public class DeckBuilder : MonoBehaviour
     [Header("Card Data")]
     [SerializeField] List<CardData> monsterCards = new List<CardData>();
     [SerializeField] List<CardData> spellCards = new List<CardData>();
+    [SerializeField] List<CardData> winConditionCards = new List<CardData>();
 
     [Header("Temp")]
     [SerializeField] Transform playerMonsterHand;
     [SerializeField] Transform playerSpellHand;
 
+    public static DeckBuilder Instance;
+
     void Start()
     {
+        Instance = this;
+
         LoadCardData();
 
-        AddRandomCard(monsterCards, playerMonsterHand, 50);
-        AddRandomCard(spellCards, playerSpellHand, 50);
+        AddRandomCard(CardData.CardTypes.Monster, 50);
+        AddRandomCard(CardData.CardTypes.Spell, 50);
     }
 
     void LoadCardData()
     {
         var monsters = Resources.LoadAll("Cards/Monsters", typeof(CardData));
         var spells = Resources.LoadAll("Cards/Spells", typeof(CardData));
+        var winConditions = Resources.LoadAll("Cards/Win Conditions", typeof(CardData));
 
         foreach (CardData data in monsters)
             monsterCards.Add(data);
 
         foreach (CardData data in spells)
             spellCards.Add(data);
+
+        foreach (CardData data in winConditions)
+            winConditionCards.Add(data);
     }
 
     public void AddCard(Card card)
@@ -40,10 +49,32 @@ public class DeckBuilder : MonoBehaviour
 
     }
 
-    public void AddRandomCard(List<CardData> cards, Transform target, int amount = 1)
+    public void AddRandomCard(CardData.CardTypes type, int amount = 1, int subtype = 0)
     {
+        Transform target = null;
+        List<CardData> cards = new List<CardData>();
+
+        switch (type)
+        {
+            case CardData.CardTypes.Monster:
+                if (subtype == 2)
+                    cards = winConditionCards;
+                else
+                    cards = monsterCards;
+
+                target = playerMonsterHand;
+                break;
+            case CardData.CardTypes.Spell:
+                cards = spellCards;
+
+                target = playerSpellHand;
+                break;
+        }
+
         int cardAmount = target.GetComponentsInChildren<Card>().Length;
-        
+        if (cards.Count <= 0)
+            return;
+
         for (int i = 0; i < amount; i++)
         {
             if (cardAmount + i > 4)

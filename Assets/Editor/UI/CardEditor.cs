@@ -250,6 +250,7 @@ public class CardEditor : EditorWindow
         cardDatas.Clear();
         GetCards(ref cardDatas, "Assets/Resources/Cards/Monsters");
         GetCards(ref cardDatas, "Assets/Resources/Cards/Spells");
+        GetCards(ref cardDatas, "Assets/Resources/Cards/Win Conditions");
 
         foreach (var data in cardDatas)
         {
@@ -286,7 +287,8 @@ public class CardEditor : EditorWindow
 
     string GetTargetPath()
     {
-        string folder = blankCardData.Type == CardData.CardTypes.Monster ? "Monsters" : "Spells";
+        string folder = blankCardData.Type == CardData.CardTypes.Monster ? blankCardData.SubType == 2 ? "Win Conditions" : "Monsters" : "Spells";
+
         return $"Assets/Resources/Cards/{folder}/{blankCardData.CardName} [CardData].asset";
     }
 

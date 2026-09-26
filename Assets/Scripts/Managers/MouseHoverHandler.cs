@@ -43,14 +43,12 @@ public class MouseHoverHandler : MonoBehaviour
 
     void HoverCard(Ray ray)
     {
-        GridItem item = null;
-
         bool itemHovered = Physics.Raycast(ray, out RaycastHit hit, mouseSelectionDistance, itemLayerMask);
         bool gridHovered = Physics.Raycast(ray, out RaycastHit _, mouseSelectionDistance, gridLayerMask);
 
         if (itemHovered) // Grid item is hovered
         {
-            hit.transform.TryGetComponent(out item);
+            hit.transform.TryGetComponent(out GridItem item);
 
             if (controls.Player.Attack.WasPressedThisFrame()) // Grid item is clicked, select item
             {
@@ -59,24 +57,13 @@ public class MouseHoverHandler : MonoBehaviour
                 if (selectedItem != null && selectedItem.CompareTag("Card"))
                     selectedItem.GetComponent<Card>().Scale(false);
 
+                selectedItem = item.GetItem();
+                DeselectItem(false);
+
                 if (item.CompareTag("Card")) // Item is a card
                 {
-                    selectedItem = item.GetComponent<Card>();
-
                     mCardLayoutGroup.SelectCard(selectedItem.GetComponent<Card>());
                     sCardLayoutGroup.SelectCard(selectedItem.GetComponent<Card>());
-                }
-
-                if (item.CompareTag("Wall")) // Item is a wall
-                {
-                    selectedItem = item.GetComponent<Wall>();
-                    DeselectItem(false);
-                }
-
-                if (item.CompareTag("Jumppad"))
-                {
-                    selectedItem = item.GetComponent<Jumppad>();
-                    DeselectItem(false);
                 }
             }
         }
@@ -116,68 +103,30 @@ public class MouseHoverHandler : MonoBehaviour
 
     void SelectBlock(GridBlock block)
     {
-        bool hasCard = block.Occupied<Card>(out Card card);
-        bool hasWall = block.Occupied<Wall>(out Wall wall);
-        bool blocked = hasCard || hasWall;
+        bool blocked = block.Occupied<GridItem>(out _);
 
         if (!blocked) // Block does not have anything on it, place an item
         {
-            if (ItemIsSpellCard())
-                return;
-
-            block.RemoveObject(preview: true);
-
-            TryPlaceCard(block);
-            TryPlaceWall(block);
-            TryPlaceJumppad(block);
-
-            gridSelect.DeselectBlocks();
+            PlaceItem(block);
         }
-        else if (card != null) // Block is occupied by a card
+        else if (block.Occupied<Card>(out Card card)) // Block is occupied by a card, select that card
         {
             if (selectedItem != null && selectedItem.CompareTag("Card"))
             {
                 selectedItem.GetComponent<Card>().Scale(false);
             }
 
-            selectedItem = card;
-            selectedItem.GetComponent<Card>().Scale();
+            selectedItem = card.Select(block, gridSelect);
 
             mCardLayoutGroup.SelectCard(null);
             sCardLayoutGroup.SelectCard(null);
 
             mCardLayoutGroup.DisplayCard(selectedItem.GetComponent<Card>());
             sCardLayoutGroup.DisplayCard(selectedItem.GetComponent<Card>());
-
-            List<bool> directions = selectedItem.GetComponent<Card>().Data.Directions;
-            int steps = selectedItem.GetComponent<Card>().Steps;
-            bool elevated = selectedItem.GetComponent<Card>().Data.WallTraversal;
-
-            int forward = directions[0] ? steps : 0;
-            int back = directions[1] ? steps : 0;
-            int left = directions[2] ? steps : 0;
-            int right = directions[3] ? steps : 0;
-            int forwardLeft = directions[4] ? steps : 0;
-            int forwardRight = directions[5] ? steps : 0;
-            int backLeft = directions[6] ? steps : 0;
-            int backRight = directions[7] ? steps : 0;
-
-            gridSelect.SelectBlocks(block.Position, fSteps: forward, bSteps: back, lSteps: left, rSteps: right, 
-                flSteps: forwardLeft, frSteps: forwardRight, blSteps: backLeft, brSteps: backRight, elevated);
         }
-        else if (wall != null) // Block is occupied by a wall
+        else // Block is occupied by something
         {
-            if (selectedItem != null && selectedItem.CompareTag("Card") && selectedItem.GetComponent<Card>().Data.WallTraversal)
-            {
-                if (ItemIsSpellCard())
-                    return;
-
-                block.RemoveObject(preview: true);
-
-                TryPlaceCard(block);
-
-                gridSelect.DeselectBlocks();
-            }
+            PlaceItem(block);
         }
     }
 
@@ -213,76 +162,30 @@ public class MouseHoverHandler : MonoBehaviour
         sCardLayoutGroup.SelectCard(null);
     }
 
-    void TryPlaceCard(GridBlock block)
+    void PlaceItem(GridBlock block)
     {
-        if (selectedItem == null || !selectedItem.CompareTag("Card")) return;
-
-        if (!selectedItem.GetComponent<Card>().Placed && block.Available) // Placed a card from hand
-        {
-            selectedItem = block.PlaceObject(ref selectedItem);
-
-            selectedItem.GetComponent<Card>().ApplyStats();
-            selectedItem.GetComponent<Card>().Placed = true;
-
-            MoveCard(block, true);
-        }
-        else if (selectedItem.GetComponent<Card>().Placed && block.Available) // Placed a card previously placed
-        {
-            selectedItem = block.PlaceObject(ref selectedItem);
-
-            MoveCard(block);
-        }
-
-        selectedItem.GetComponent<Card>().Scale(false);
-        selectedItem = null;
-
-        mCardLayoutGroup.SelectCard(null);
-        sCardLayoutGroup.SelectCard(null);
-    }
-
-    void TryPlaceWall(GridBlock block)
-    {
-        if (selectedItem == null || !selectedItem.CompareTag("Wall")) return;
-
-        if (block.Available)
-            block.PlaceObject(ref selectedItem);
-    }
-
-    void TryPlaceJumppad(GridBlock block)
-    {
-        if (selectedItem == null || !selectedItem.CompareTag("Jumppad")) return;
-
-        if (block.Available)
-            block.PlaceObject(ref selectedItem);
-    }
-
-    void MoveCard(GridBlock block, bool noSteps = false)
-    {
-        int relativeHorizontalPosition = (block.Position % gridSelect.GetLength()) + block.Row;
-        int relativePosition = block.Row;
-
-        if (noSteps)
-        {
-            int cardPosition = selectedItem.GetComponent<Card>().HorizontalPosition;
-            int steps = Math.Abs(relativeHorizontalPosition - cardPosition);
-
-            selectedItem.GetComponent<Card>().Move(0, relativePosition, relativeHorizontalPosition);
+        if (selectedItem == null)
             return;
-        }
 
-        if (selectedItem.GetComponent<Card>().Position == block.Row)
+        if (ItemIsSpellCard())
+            return;
+
+        if (block.HeldItem != null && !selectedItem.CanStack())
+            return;
+
+        block.RemoveObject(preview: true);
+
+        selectedItem = selectedItem.TryPlaceItem(block, selectedItem, gridSelect);
+
+        gridSelect.DeselectBlocks();
+
+        if (selectedItem.CompareTag("Card"))
         {
-            int cardPosition = selectedItem.GetComponent<Card>().HorizontalPosition;
-            int steps = Math.Abs(relativeHorizontalPosition - cardPosition);
+            selectedItem.GetComponent<Card>().Scale(false);
+            selectedItem = null;
 
-            selectedItem.GetComponent<Card>().Move(steps, relativePosition, relativeHorizontalPosition);
-        }
-        else
-        {
-            int cardPosition = selectedItem.GetComponent<Card>().Position;
-            int steps = Math.Abs(relativePosition - cardPosition);
-
-            selectedItem.GetComponent<Card>().Move(steps, relativePosition, relativeHorizontalPosition);
+            mCardLayoutGroup.SelectCard(null);
+            sCardLayoutGroup.SelectCard(null);
         }
     }
 

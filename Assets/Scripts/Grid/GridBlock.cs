@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class GridBlock : MonoBehaviour
 {
-    [SerializeField] int position;
-    [SerializeField] int row;
+    [Header("Availibility")]
     [SerializeField] bool available;
+
+    [Header("Position Values")]
+    [SerializeField] int position;
+    [SerializeField] int x;
+    [SerializeField] int y;
 
     [Header("Object Parent")]
     [SerializeField] Transform placement;
@@ -15,9 +19,13 @@ public class GridBlock : MonoBehaviour
     [SerializeField] GridItem heldObjectPreview;
     [SerializeField] List<GridItem> previousHeldObjects = new List<GridItem>();
 
-    public int Position { get { return position; } set { position = value; } }
-    public int Row { get { return row; } set { row = value; } }
     public bool Available { get { return available; } set { available = value; } }
+    public int Position { get { return position; } set { position = value; } }
+    public int X { get { return x; } set { x = value; } }
+    public int Y { get { return y; } set { y = value; } }
+    
+    public GridItem HeldItem { get { return heldObject; } }
+    public GridItem LastHeldItem { get { return previousHeldObjects.Count > 0 ? previousHeldObjects[previousHeldObjects.Count - 1] : null; } }
 
     void Update()
     {
@@ -72,6 +80,7 @@ public class GridBlock : MonoBehaviour
             }
             
             heldObject = clonedObject;
+            heldObject.currentBlock = this;
         }
 
         return clonedObject as T;
